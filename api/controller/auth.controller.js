@@ -23,6 +23,7 @@ export const signup = async (req, res, next ) =>{
         res.status(201).send({
             message : "new user created"
         });
+        console.log("Signed up");
     } catch (error) {
         next(error);
     }
@@ -46,6 +47,8 @@ export const signin  = async(req, res, next) =>{
         const {password : pas, ...rest} = validUser._doc;
         res.cookie('token', token, {httpOnly : true}).status(200).json(rest);
         // return validUser;
+
+        // console.log("signed In");
 
     } catch (error) {
         // console.log(error.message);
