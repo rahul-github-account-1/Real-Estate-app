@@ -26,7 +26,7 @@ const listingSchema = new mongoose.Schema(
             type : Boolean,
             required : true,
         },  
-        beds :{
+        bedrooms :{
             type : Number,
             required : true,
         },
@@ -42,12 +42,17 @@ const listingSchema = new mongoose.Schema(
             type : Number,
             required : true,
         },
-        discountedPrice : {
+        discountPrice : {
             type : Number
         },
-        images : {
+        imageURLs : {
             type : Array
-        }
+        },
+        userRef :{
+            type : String,
+            required : true,
+        },
+
     }, 
     {timestamps : true}
 );
