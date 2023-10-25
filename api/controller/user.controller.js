@@ -48,10 +48,25 @@ export const deleteUser = async(req, res, next) => {
     console.log(deleteUser);
     if (!deletedUser) {
       return next(errorHandler(404, 'User not found'));
-    } 
+    }
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     next(error);
   }
 };
+
+export const signOut = async (req, res, next) =>{
+  if (req.user.id !== req.params.id)
+    return next(errorHandler(401, 'You can only sign out your own account!'));
+
+    try {
+        const token = req.cookies.token;
+        res.clearCookie('token'); // Clear the session cookie
+        res.status(200).json({ message: 'Signed out successfully' });
+            
+    } catch (error) {
+      next(error);  
+    }
+
+}
