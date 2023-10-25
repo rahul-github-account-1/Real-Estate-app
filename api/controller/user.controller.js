@@ -56,17 +56,3 @@ export const deleteUser = async(req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) =>{
-  if (req.user.id !== req.params.id)
-    return next(errorHandler(401, 'You can only sign out your own account!'));
-
-    try {
-        const token = req.cookies.token;
-        res.clearCookie('token'); // Clear the session cookie
-        res.status(200).json({ message: 'Signed out successfully' });
-            
-    } catch (error) {
-      next(error);  
-    }
-
-}

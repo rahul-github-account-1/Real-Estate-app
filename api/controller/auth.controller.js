@@ -95,3 +95,16 @@ export const google = async(req, res, next)  =>{
     }
 
 }
+
+
+export const signOut = async (req, res, next) =>{  
+      try {
+          const token = req.cookies.token;
+          res.clearCookie('token'); // Clear the session cookie
+          res.status(200).json({ message: 'Signed out successfully' });
+              
+      } catch (error) {
+        next(error);  
+      }
+  
+  }
