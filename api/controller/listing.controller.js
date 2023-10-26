@@ -6,7 +6,7 @@ export const createListing = async(req, res, next) =>{
     try {
         const listing = new Listing(req.body);
 
-        console.log(listing);
+        console.log('listing bana di');
 
         await listing.save()
         res.status(201).json(listing);
@@ -18,7 +18,7 @@ export const createListing = async(req, res, next) =>{
 export const deleteListing = async(req, res, next)=>
 {
     const listing = await Listing.findById(req.params.id);
-    console.log(listing);
+    // console.log(listing);
 
     if(!listing ){
         next(errorHandler(404, 'Listing not found.'));
@@ -33,7 +33,7 @@ export const deleteListing = async(req, res, next)=>
 
         const deletedListing = await Listing.findByIdAndDelete(req.params.id);
 
-        console.log(deletedListing);
+        console.log('listing deleted');
         
         res.status(200).json({message : 'Listing deleted successfully.'});
         
@@ -77,7 +77,7 @@ export const getListing = async (req, res, next) =>{
         if(!listing){
             next(errorHandler(404, 'Listing not found!'));
         }
-        console.log(listing);
+        console.log('listing de di');
         res.status(200).json(listing);
         
     } catch (error) {
