@@ -1,11 +1,11 @@
 import bcryptjs from 'bcrypt';
 import User from '../models/user.model.js';
+import Listing from '../models/listing.model.js';
 import { errorHandler } from '../utils/error.js';
 
-export const test = (req, res) => {
-  res.json({
-    message: 'Api route is working!',
-  });
+export const test = async(req, res) => {
+  
+  
 };
 
 export const updateUser = async (req, res, next) => {
@@ -55,4 +55,15 @@ export const deleteUser = async(req, res, next) => {
     next(error);
   }
 };
+
+export const userListing = async(req, res, next)=>{
+  try {
+    const data = await Listing.find({userRef : req.user.id})
+
+    console.log(data);
+    res.status(200).json(data);
+} catch (error) {
+  next(error);
+}
+}
 
