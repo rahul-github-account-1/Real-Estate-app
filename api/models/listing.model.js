@@ -34,7 +34,7 @@ const listingSchema = new mongoose.Schema(
             type : Number,
             default : 0,
         },
-        Bathrooms :{
+        bathrooms :{
             type : Number,
             default : 0,
         },
