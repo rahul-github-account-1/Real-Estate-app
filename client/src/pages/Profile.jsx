@@ -28,6 +28,8 @@ export default function Profile() {
 
   const [userListings, setUserListing] = useState([]);
   const [getUserListingError, setGetUserListingError] = useState(false);
+  const [listingDeleteError, setListingDeleteError] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -163,6 +165,8 @@ export default function Profile() {
 
   const handleListingDelete = async (id)=>{
     try {
+      setListingDeleteError(false);
+
       console.log(id);
       const res = await fetch(`/api/listing/delete/${id}`, {
         method : 'DELETE'
@@ -171,16 +175,17 @@ export default function Profile() {
       const data = await res.json();
 
       if(data.success === false){
-          console.log(data.message);
+          // console.log(data.message);
+          setListingDeleteError(data.message);
           return;
       }
 
       setUserListing((prev) => prev.filter((listing) => listing._id !== id));
 
-
+      setListingDeleteError(false);
       
     } catch (error) {
-      
+      setListingDeleteError(error.message);
     }
   }
 
@@ -270,6 +275,11 @@ export default function Profile() {
       <p className='text-red-700 mt-5'>
         {getUserListingError && getUserListingError}
       </p>
+      
+      <p className='text-red-700 mt-5'>
+        {listingDeleteError && listingDeleteError}
+      </p>
+      
 
       {userListings &&
         userListings.length > 0 &&
