@@ -15,7 +15,7 @@ export default function CreateListing() {
   const [formData, setFormData] = useState({
     imageURLs : [],
     name : "",
-    discription : "",
+    description : "",
     address : "",
     sell : 0,
     rent : 0,
@@ -179,16 +179,19 @@ export default function CreateListing() {
           <input
             type='text' placeholder='Name' className='border p-3 rounded-lg' id='name'
             required
+            value = {formData.name}
           />
           <textarea  onChange={handleChange} 
             type='text' placeholder='Description'
             className='border p-3 rounded-lg'
             id='description'
             required
+            value = {formData.description}
           />
           <input  onChange={handleChange} 
             type='text' placeholder='Address' className='border p-3 rounded-lg' id='address'
             required
+            value = {formData.address}
           />
           <div className='flex gap-6 flex-wrap'>  {/*for chekboxes */}
             <div  onChange={handleChange}  className='flex gap-2'>
@@ -202,15 +205,19 @@ export default function CreateListing() {
               <span>Rent</span>
             </div>
             <div className='flex gap-2'>
-              <input  onChange={(e) => handleChange}  type='checkbox' id='parking' className='w-5' />
+              <input  onChange={(e) => handleChange}  type='checkbox' id='parking' className='w-5' 
+              value={formData.parking}
+              />
               <span>Parking spot</span>
             </div>
             <div className='flex gap-2'>
-              <input  onChange={(e) => handleChange}  type='checkbox' id='furnished' className='w-5' />
+              <input  onChange={(e) => handleChange}  type='checkbox' id='furnished' className='w-5'
+              value = {formData.furnished} />
               <span>Furnished</span>
             </div>
             <div className='flex gap-2'>
-              <input  onChange={(e) => handleChange}  type='checkbox' id='offer' className='w-5' />
+              <input  onChange={(e) => handleChange}  type='checkbox' id='offer' className='w-5' 
+              value = {formData.offer}/>
               <span>Offer</span>
             </div>
           </div>
@@ -240,6 +247,9 @@ export default function CreateListing() {
               />
               <div className='flex flex-col items-center'>
                 <p>Regular price</p>
+                {formData.type === 'rent' && (
+                  <span className='text-xs'>($ / month)</span>
+                )}
               </div>
             </div>
             <div className='flex items-center gap-2'>
@@ -253,6 +263,9 @@ export default function CreateListing() {
               />
               <div className='flex flex-col items-center'>
                 <p>Discounted price</p>
+                {formData.type === 'rent' && (
+                  <span className='text-xs'>($ / month)</span>
+                )}
               </div>
             </div>
           </div>

@@ -229,18 +229,18 @@ export default function UpdateListing() {
             </div>
             <div className='flex gap-2'>
               <input  onChange={handleChange}  type='checkbox' id='parking' className='w-5'
-               checked = {formData.parking === 1} />
+               checked = {formData.parking} />
               <span>Parking spot</span>
             </div>
             <div className='flex gap-2'>
               <input  onChange={handleChange}  type='checkbox' id='furnished' className='w-5' 
-                checked = {formData.furnished === 1}
+                checked = {formData.furnished}
               />
               <span>Furnished</span>
             </div>
             <div className='flex gap-2'>
               <input  onChange={ handleChange}  type='checkbox' id='offer' className='w-5'
-               checked = {formData.offer === 1} />
+               checked = {formData.offer} />
               <span>Offer</span>
             </div>
           </div>
@@ -270,6 +270,9 @@ export default function UpdateListing() {
               />
               <div className='flex flex-col items-center'>
                 <p>Regular price</p>
+                {formData.type === 'rent' && (
+                  <span className='text-xs'>($ / month)</span>
+                )}
               </div>
             </div>
             <div className='flex items-center gap-2'>
@@ -283,6 +286,9 @@ export default function UpdateListing() {
               />
               <div className='flex flex-col items-center'>
                 <p>Discounted price</p>
+                {formData.type === 'rent' && (
+                  <span className='text-xs'>($ / month)</span>
+                )}
               </div>
             </div>
           </div>
