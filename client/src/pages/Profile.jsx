@@ -13,7 +13,7 @@ import { updateUserStart, updateUserSuccess, updateUserFailure,
         deleteUserStart, deleteUserSuccess, deleteUserFailure,
         signOutUserStart, signOutUserSuccess, signOutUserFailure } from '../redux/user/userSlice';
 import {useDispatch} from "react-redux"
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Listing from '../../../api/models/listing.model';
 
 export default function Profile() {
@@ -26,8 +26,9 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
-  const [userListings, setUserListing] = useState([]);
   const [getUserListingError, setGetUserListingError] = useState(false);
+
+  const [userListings, setUserListing] = useState([]);
   const [listingDeleteError, setListingDeleteError] = useState(false);
 
   const dispatch = useDispatch();
@@ -189,6 +190,10 @@ export default function Profile() {
     }
   }
 
+  const handleListingEdit = async(id) =>{
+    // navigate('/edit-listing)
+  }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -308,7 +313,7 @@ export default function Profile() {
 
               <div className='flex flex-col item-center'>
                 <button onClick={() =>handleListingDelete(listing._id)} className='text-red-700 uppercase'>Delete</button>
-                <button className='text-green-700 uppercase'>Edit</button>
+                <button onClick={() => handleListingEdit(listing._id)} className='text-green-700 uppercase'>Edit</button>
               </div>
             </div>
           ))}
