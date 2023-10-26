@@ -14,33 +14,37 @@ const listingSchema = new mongoose.Schema(
             type : String, 
             required : true,
         },
-        type :{
+        // type :{
+        //     type : String,
+        //     required : true,
+        // },
+        type : {
             type : String,
             required : true,
         },
         parking : {
             type : Boolean,
-            required : true,
+            default : 0,
         },
         furnished : {
             type : Boolean,
-            required : true,
+            default : 0,
         },  
         bedrooms :{
             type : Number,
-            required : true,
+            default : 0,
         },
         Bathrooms :{
             type : Number,
-            required: true,
+            default : 0,
         },
         offer :{
             type : Boolean,
-            required : true,
+            default : 0,
         },
         regularPrice : {
             type : Number,
-            required : true,
+            // required : true,
         },
         discountPrice : {
             type : Number
@@ -52,6 +56,7 @@ const listingSchema = new mongoose.Schema(
             type : String,
             required : true,
         },
+        
 
     }, 
     {timestamps : true}
