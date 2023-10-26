@@ -60,7 +60,7 @@ export const userListing = async(req, res, next)=>{
   try {
     const data = await Listing.find({userRef : req.user.id})
 
-    console.log(data);
+    // console.log(data);
     res.status(200).json(data);
 } catch (error) {
   next(error);

@@ -27,7 +27,8 @@ export default function CreateListing() {
     bedrooms : 1,
     bathrooms : 1,
   })
-  // console.log(files);  
+  // console.log(files); 
+  console.log(error); 
   console.log(formData);
 
   const handleImageUpload = (e) =>{
@@ -127,7 +128,8 @@ export default function CreateListing() {
   }
   const handleSubmit = async (e) =>{
     e.preventDefault();
-    try {
+    if(formData.imageURLs.length > 0){
+      try {
         // if (formData.imageURLs.length < 1){
         //    setError('You must upload at least one image');
         //     return
@@ -145,7 +147,7 @@ export default function CreateListing() {
         })
 
         const data = await res.json();
-
+ 
         if(data.success == false){
           setError(data.message);
           setLoading(false);
@@ -160,6 +162,10 @@ export default function CreateListing() {
     } catch (error) {
       setLoading(false);
       setError(error.message);
+    }
+
+    }else{
+      setError('upload atleast 1 image');
     }
 
   }
@@ -263,7 +269,7 @@ export default function CreateListing() {
               {uploading ? 'Uploading' : 'Upload'}
             </button>
           </div>
-          <p className='text-red-700 text-sm'>
+          <p className='text-red-800 text-sm'>
             {imageUploadError && imageUploadError}
           </p>
           {formData.imageURLs.length > 0 &&
@@ -281,8 +287,12 @@ export default function CreateListing() {
             <button disabled = {loading ||uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
             >
               {loading ? "creating..." : "Create Listing"}</button>
+
+              <p className='text-red-700 text-sm'>
+            {error && error}
+          </p>
         </div>
-              {error ? {error} :""}
+        
       </form>
     </main>
   );
