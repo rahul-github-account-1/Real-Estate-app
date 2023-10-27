@@ -92,13 +92,19 @@ export const getListings = async (req, res, next) =>{
 
         const searchTerm = req.query.searchTerm || '';
 
+        console.log(req.query);
+
         let offer = req.query.offer;
-        if(offer === undefined || offer === false){
+        if(offer === undefined || offer === 'false'){
             offer = {$in : [false, true]};
+        }else{
+            offer = true;
         }
         let parking = req.query.parking;
-        if(parking === undefined || parking === false){
+        if(parking === undefined || parking === 'false'){
             parking = {$in : [false, true]};
+        }else{
+            parking = true;
         }
 
         let type = req.query.type;
@@ -107,8 +113,10 @@ export const getListings = async (req, res, next) =>{
         }
 
         let furnished = req.query.furnished;
-        if(furnished === undefined || furnished === false){
+        if(furnished === undefined || furnished === 'false'){
             furnished = {$in : [true, false]};
+        }else{
+            furnished = true;
         }
 
         let sort = req.query.sort || 'createdAt';
