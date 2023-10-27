@@ -20,7 +20,7 @@ export const deleteListing = async(req, res, next)=>
     const listing = await Listing.findById(req.params.id);
     // console.log(listing);
 
-    if(!listing ){
+    if(!listing ){  
         next(errorHandler(404, 'Listing not found.'));
         return;
    }
@@ -78,6 +78,7 @@ export const getListing = async (req, res, next) =>{
             next(errorHandler(404, 'Listing not found!'));
         }
         console.log('listing de di');
+        // console.log(listing);
         res.status(200).json(listing);
         
     } catch (error) {
@@ -92,7 +93,7 @@ export const getListings = async (req, res, next) =>{
 
         const searchTerm = req.query.searchTerm || '';
 
-        // console.log(req.query);
+        console.log(req.query);
 
         let offer = req.query.offer;
         if(offer === undefined || offer === 'false'){

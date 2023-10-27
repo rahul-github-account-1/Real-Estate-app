@@ -26,9 +26,10 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
+  const [getUserListingLoading,setGetUserListingLoading ] = useState(false);
   const [getUserListingError, setGetUserListingError] = useState(false);
-
   const [userListings, setUserListing] = useState([]);
+
   const [listingDeleteError, setListingDeleteError] = useState(false);
 
   const dispatch = useDispatch();
@@ -143,12 +144,13 @@ export default function Profile() {
   const handleGetUserListing = async()=>{
     try {
       setGetUserListingError(false)
-
+      setGetUserListingLoading(true);
       const res = await fetch(`/api/user/userListing/${currentUser._id}`)
 
       const data = await res.json();
       if(data.success == false){
         setGetUserListingError(data.message);
+        setGetUserListingLoading(false);
         return;
       }
       console.log(data);
@@ -159,8 +161,10 @@ export default function Profile() {
       }
       setUserListing(data);
       setGetUserListingError(false);
+      setGetUserListingLoading(false);
     } catch (error) {
       setGetUserListingError(error.message);
+      setGetUserListingLoading(false);
     }
   }
 
@@ -273,7 +277,7 @@ export default function Profile() {
         {updateSuccess ? 'User is updated successfully!' : ''}
       </p>
 
-      <span onClick={handleGetUserListing} className='text-green-700 cursor-pointer self-center'>show listing</span>
+      <span onClick={handleGetUserListing} disabled={getUserListingLoading} className='text-green-900 cursor-pointer self-center disabled:opacity-80'>show listing</span>
       
       <p className='text-red-700 mt-5'>
         {getUserListingError && getUserListingError}

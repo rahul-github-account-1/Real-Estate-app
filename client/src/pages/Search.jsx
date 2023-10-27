@@ -10,7 +10,7 @@ export default function Search() {
     const[showMore, setShowMore] = useState(false);
 
     const navigate = useNavigate();
-
+ 
     const [formData, setFormData] = useState({
         searchTerm : '',
         type : 'all',
@@ -34,9 +34,9 @@ export default function Search() {
       const parkingFromUrl = urlParams.get('parking')
       const furnishedFromUrl = urlParams.get('furnished')
       const sortFromUrl = urlParams.get('sort')
-      const orderFromUrl = urlParams.get('oderr')
+      const orderFromUrl = urlParams.get('order')
 
-      // console.log(searchTermFromUrl);
+      console.log(offer);
       if(
         searchTermFromUrl ||
         typeFromUrl  ||
@@ -66,7 +66,7 @@ export default function Search() {
           const urlParams = new URLSearchParams();
           for (const key in formData) {
             if (formData.hasOwnProperty(key)) {
-              console.log(key);
+              // console.log(key);
               urlParams.set(key, formData[key]);
             }
           }
@@ -94,7 +94,7 @@ export default function Search() {
 
           
         } catch (error) {
-          setLoading(false);
+          setLoading(falsse);
           setError(true);
         }
       }
@@ -139,11 +139,14 @@ export default function Search() {
       e.preventDefault();
       // console.log(searchParams);
       const urlParams = new URLSearchParams();
-      for (const key in formData) {
-        if (formData.hasOwnProperty(key)) {
-          urlParams.set(key, formData[key]);
-        }
-      }
+      urlParams.set('searchTerm', formData.searchTerm);
+      urlParams.set('type', formData.type);
+      urlParams.set('parking', formData.parking);
+      urlParams.set('furnished', formData.furnished);
+      urlParams.set('offer', formData.offer);
+      urlParams.set('sort', formData.sort);
+      urlParams.set('order', formData.order);      
+      
       const searchQuery = urlParams.toString();
       navigate( `/search?${searchQuery}`);
     }
@@ -270,7 +273,6 @@ export default function Search() {
               Loading...
             </p>
           )}
-          
           {!loading &&
             listings &&
             
