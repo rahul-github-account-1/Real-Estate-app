@@ -167,7 +167,7 @@ SwiperCore.use([Navigation]);
                 {listing.furnished ? 'Furnished' : 'Unfurnished'}
               </li>
             </ul>
-            {(currentUser && currentUser.id !== listing.userRef ) &&
+            {(currentUser && currentUser._id !== listing.userRef ) &&
             (
             <div>
                 <button hidden= {contact} onClick={()=>{
