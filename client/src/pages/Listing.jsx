@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 // import {SliderWrap} from "./swiper.style";
 
@@ -16,6 +16,8 @@ import {
     FaShare,
   } from 'react-icons/fa';
 import 'swiper/css/bundle';
+import { useSelector } from 'react-redux';
+import Contact from '../component/Contact';
 // import 'swiper/swiper-bundle.css';
 
 
@@ -27,11 +29,15 @@ SwiperCore.use([Navigation]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [hide, setHide] = useState(false);
+    const [contact, setContact] = useState(false);
+    const [contactForm, setContactForm] = useState(false);  
+    const { currentUser } = useSelector((state) => state.user);  
     const params = useParams();
 
-    console.log(listing);
-    console.log(error);
-    console.log(loading);
+    // console.log(listing);
+    // console.log(error);
+    // console.log(loading);
 
     useEffect(() =>{
         const fetchListing =async () =>{
@@ -70,6 +76,7 @@ SwiperCore.use([Navigation]);
 
         fetchListing();
     }, [params.listingId]) // means when listinId is changed this useEffect will execute.
+
   return (
     <main>
         {loading && <p className= 'text-center my-4 text-2xl'>loading...</p>}
@@ -78,7 +85,7 @@ SwiperCore.use([Navigation]);
         {listing && !error && !loading &&
         (
             
-                <div className="">
+        <div className="">
           <Swiper navigation>
             {listing.imageURLs.map((url) => (
               <SwiperSlide key={url}>
@@ -160,9 +167,35 @@ SwiperCore.use([Navigation]);
                 {listing.furnished ? 'Furnished' : 'Unfurnished'}
               </li>
             </ul>
-          </div>
+            {(currentUser && currentUser.id !== listing.userRef ) &&
+            (
+            <div>
+                <button hidden= {contact} onClick={()=>{
+                    setContact(true);
+                }} className='w-full bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
+               >
+                contact landLord    
+        </button>
+
+        {contact && (
+            <Contact listing = {listing}/>
+        )}
+
+            </div>
+
+            
+            )
+          }
           
           </div>
+
+          
+          
+        </div>
+
+
+
+          
 
         )
           
