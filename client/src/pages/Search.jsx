@@ -7,7 +7,7 @@ export default function Search() {
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-
+    const[showMore, setShowMore] = useState(false);
 
     const navigate = useNavigate();
 
@@ -21,8 +21,8 @@ export default function Search() {
         order : 'desc',
     }); 
 
-    console.log(formData);
-    console.log(listings);
+    // console.log(formData);
+    // console.log(listings);
 
     useEffect(() =>{
       const urlParams = new URLSearchParams(location.search);
@@ -61,10 +61,12 @@ export default function Search() {
         try {
           setLoading(true);
           setError(false);
+          setShowMore(false);
 
           const urlParams = new URLSearchParams();
           for (const key in formData) {
             if (formData.hasOwnProperty(key)) {
+              console.log(key);
               urlParams.set(key, formData[key]);
             }
           }
@@ -81,6 +83,11 @@ export default function Search() {
             return;
           }
 
+          if(data.length > 8){
+            setShowMore(true);
+          }else{
+            setShowMore(false);
+          }
           setLoading(false);
           setListings(data);
           // console.log(data);
@@ -141,6 +148,35 @@ export default function Search() {
       navigate( `/search?${searchQuery}`);
     }
 
+    const handleShowMore = async (e) =>{
+      e.preventDefault();
+      try {
+        const urlParams = new URLSearchParams(location.search);
+
+        urlParams.set(
+          'startIndex' , listings.length       
+        )
+        
+        const searchQuery = urlParams.toString();
+
+        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        const data = await res.json();
+
+        // console.log(data);
+        if(data.success === false){
+          console.log(data.message);
+          return;
+        }
+
+        if(data.length < 9){
+          setShowMore(false);
+        }
+        
+        setListings([...listings, ...data]);
+      } catch (error) {
+          console.log(error.message);
+      }
+    }
   return (
     <div className='flex flex-col md:flex-row'>
       <div className='p-7  border-b-2 md:border-r-2 md:min-h-screen'>
@@ -234,13 +270,20 @@ export default function Search() {
               Loading...
             </p>
           )}
-
+          
           {!loading &&
             listings &&
+            
             listings.map((listing) => (
               <ListingCard key={listing._id} listing={listing} />
             ))}
         </div>
-      </div>    </div>
+
+        {showMore && (
+          <button onClick={handleShowMore} 
+          className='text-green-600 p-4 hover:underline'>Show More</button>
+          )}  
+        </div>
+    </div>
   );
 }
