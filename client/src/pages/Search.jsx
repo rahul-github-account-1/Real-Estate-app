@@ -63,13 +63,13 @@ export default function Search() {
           setError(false);
           setShowMore(false);
 
-          const urlParams = new URLSearchParams();
-          for (const key in formData) {
-            if (formData.hasOwnProperty(key)) {
-              // console.log(key);
-              urlParams.set(key, formData[key]);
-            }
-          }
+          // const urlParams = new URLSearchParams();   // DONT NEED TO DO THIS.
+          // for (const key in formData) {
+          //   if (formData.hasOwnProperty(key)) {
+          //     // console.log(key);
+          //     urlParams.set(key, formData[key]);
+          //   }
+          // }
           const searchQuery = urlParams.toString();
     
           const res = await fetch(`/api/listing/get?${searchQuery}`);
@@ -88,13 +88,13 @@ export default function Search() {
           }else{
             setShowMore(false);
           }
-          setLoading(false);
           setListings(data);
+          setLoading(false);
           // console.log(data);
 
           
         } catch (error) {
-          setLoading(falsse);
+          setLoading(false);
           setError(true);
         }
       }
@@ -119,7 +119,7 @@ export default function Search() {
         if(e.target.id === 'parking' || e.target.id === 'furnished' || e.target.id === 'offer'){
           setFormData({
             ...formData,
-            [e.target.id] : e.target.checked,
+            [e.target.id] : e.target.checked || e.target.checked === 'true' ? true : false,
           })
       }
 
@@ -246,7 +246,7 @@ export default function Search() {
             <label className='font-semibold'>Sort:</label>
             <select id='sort_order' className='border rounded-lg p-3'
             onChange={handleChange} 
-            defaultValue={'created_at_desc'}
+            defaultValue={'createdAt_desc'}
 
             >
               <option value='regularPrice_desc'>Price high to low</option>
