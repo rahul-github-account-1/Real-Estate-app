@@ -93,7 +93,7 @@ export const getListings = async (req, res, next) =>{
 
         const searchTerm = req.query.searchTerm || '';
 
-        console.log(req.query);
+        // console.log(req.query);
 
         let offer = req.query.offer;
         if(offer === undefined || offer === 'false'){

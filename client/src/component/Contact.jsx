@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Contact({ listing }) {
   const [landlord, setLandlord] = useState(null);
+  const [getLandlordError, setGetLandlordError] = useState(null);
   const [message, setMessage] = useState('');
   const onChange = (e) => {
     setMessage(e.target.value);
@@ -11,13 +12,20 @@ export default function Contact({ listing }) {
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
+        setGetLandlordError(false);
         if(!listing) return;
         const res = await fetch(`/api/user/${listing.userRef}`);
         const data = await res.json();
+
+        if(data.success == false){
+          setGetLandlordError(data.message);
+          return;
+        }
         setLandlord(data);
         console.log(landlord);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
+        setGetLandlordError(error.message);
       }
     };
     fetchLandlord();
@@ -26,6 +34,11 @@ export default function Contact({ listing }) {
   
   return (
     <>
+      {getLandlordError && (
+        <span className='text-red-700'>
+          {getLandlordError};
+        </span>
+      )}
       {landlord && (
         <div className='flex flex-col gap-2 my-4'>
           <p>
