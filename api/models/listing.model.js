@@ -56,11 +56,20 @@ const listingSchema = new mongoose.Schema(
             type : String,
             required : true,
         },
-        
-
-    }, 
+        location: {
+            type: {
+                type: String, // Don't do `{ location: { type: String } }`
+                enum: ['Point'], // 'location.type' must be 'Point'
+            },
+            coordinates: {
+                type: [Number], // Array of numbers
+            }
+        }
+    },
     {timestamps : true}
 );
+
+listingSchema.index({ location: '2dsphere' });
 
 const Listing  = mongoose.model('Listing',listingSchema );
 
