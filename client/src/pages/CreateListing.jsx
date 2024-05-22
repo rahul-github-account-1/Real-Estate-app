@@ -26,6 +26,10 @@ export default function CreateListing() {
     discountPrice :100,
     bedrooms : 1,
     bathrooms : 1,
+    location : {
+      type : "Point", 
+      coordinates :[0, 0]
+    }
   })
   // console.log(files); 
   console.log(error); 
@@ -169,6 +173,33 @@ export default function CreateListing() {
     }
 
   }
+
+  const handleAddressUpload = async(e) =>{
+    // console.log("handleAddressUpload called");
+    try {
+      const address = formData.address;
+      // console.log(address);
+      // console.log(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`)
+      const data = await response.json();
+      // console.log(data);
+
+      if(data.status = 'OK'){
+        const latitude = data.results[0].geometry.location.lat;
+        const longitude = data.results[0].geometry.location.lng;
+
+        console.log(latitude, longitude);
+
+        formData.location.coordinates[0] = latitude;
+        formData.location.coordinates[1] = longitude;
+
+        // console.log("formData.location.coordinates[0]", formData.location.coordinates[0]);
+        // console.log("formData.location.coordinates[1]", formData.location.coordinates[1]);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
@@ -193,6 +224,11 @@ export default function CreateListing() {
             required
             value = {formData.address}
           />
+          <button type = "button" onClick={handleAddressUpload} className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'
+            >
+              Find
+              {/* {finding ? 'Uploading' : 'Upload'} */}
+            </button>
           <div className='flex gap-6 flex-wrap'>  {/*for chekboxes */}
             <div  onChange={handleChange}  className='flex gap-2'>
               <input type='checkbox' id='sell' className='w-5'

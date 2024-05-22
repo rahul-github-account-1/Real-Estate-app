@@ -11,7 +11,7 @@ export default function Home() {
   const [rentListing, setRentListing] = useState(false);
   const [sellListing, setSellListing] = useState(false);
 
-  console.log(offerListing);
+  // console.log(offerListing);
   SwiperCore.use([Navigation]);
 
     const imageUrls = [
