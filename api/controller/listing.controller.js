@@ -1,3 +1,4 @@
+import { app } from "../../client/src/firebase.js";
 import Listing from "../models/listing.model.js";
 import { errorHandler } from "../utils/error.js";
 
@@ -123,13 +124,34 @@ export const getListings = async (req, res, next) =>{
         let sort = req.query.sort || 'createdAt';
         let order = req.query.order || 'desc'
 
-        const data = await Listing.find({
-            name  : { $regex:searchTerm, $options: 'i'},
-            offer : offer, 
-            furnished,
-            type,
-            parking,
-        }).sort({
+        let applyGeoFilter = req.query.applyGeoFilter || 0;
+        let latitude = req.query.latitude || 0;
+        let longitude = req.query.longitude || 0;
+        let radiusInRadians = req.query.radiusInRadians || 1000000000000;
+
+        const baseQuery = {
+            name: { $regex: searchTerm, $options: 'i' },
+            offer: offer,
+            furnished: furnished,
+            type: type,
+            parking: parking
+        }
+        if(applyGeoFilter){
+            baseQuery.location= {
+                $geoWithin: {
+                    $centerSphere: [
+                      [longitude, latitude], radiusInRadians
+                    ]
+                  }
+            }
+        }else{
+            baseQuery.$or = [
+                { location: { $exists: false } },
+                { location: { $exists: true } }
+            ];
+        }
+
+        const data = await Listing.find(baseQuery).sort({
             [sort] : order,
         }).limit(limit).skip(startIndex);
 
