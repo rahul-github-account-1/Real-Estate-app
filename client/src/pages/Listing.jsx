@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
-
+import Map from './GoogleMap'
 // import {SliderWrap} from "./swiper.style";
 
 import {Swiper, SwiperSlide} from 'swiper/react';
@@ -34,6 +34,8 @@ SwiperCore.use([Navigation]);
     const [contactForm, setContactForm] = useState(false);  
     const { currentUser } = useSelector((state) => state.user);  
     const params = useParams();
+    const [location, setLocation] = useState({ lat: -34.397, lng: 150.644 });
+
 
     // console.log(listing);
     // console.log(error);
@@ -53,7 +55,8 @@ SwiperCore.use([Navigation]);
                 const res = await fetch(`/api/listing/get/${listingId}`);
     
                 const data = await res.json();
-    
+              
+                console.log(data);
                 if(data.success == false){
                     console.log(data.message);
                     setError(data.message);
@@ -64,6 +67,15 @@ SwiperCore.use([Navigation]);
                 setLoading(false);
                 setListing(data);
                 setError(false);
+
+                if(data.location){
+                  setLocation({
+                    lat: data.location.coordinates[0], 
+                    lng: data.location.coordinates[1], 
+                  })
+                }
+                
+                // console.log(location)
             } catch (error) {
                 setLoading(false);
                 setError(error.message);
@@ -105,7 +117,7 @@ SwiperCore.use([Navigation]);
             <FaShare
               className='text-slate-500'
               onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
+               navigator.clipboard.writeText(window.location.href);
                 setCopied(true);
                 setTimeout(() => {
                   setCopied(false);
@@ -120,6 +132,11 @@ SwiperCore.use([Navigation]);
           )}
 
           <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
+          {listing.location && (
+            <Map location = {location}></Map>
+          )
+          }
+          
             <p className='text-2xl font-semibold'>
               {listing.name} - ${' '}
               {listing.offer
@@ -176,6 +193,7 @@ SwiperCore.use([Navigation]);
                >
                 contact landLord    
         </button>
+        
 
         {contact && (
             <Contact listing = {listing}/>
@@ -199,7 +217,8 @@ SwiperCore.use([Navigation]);
 
         )
           
-        }
+        }        
+
 
     </main>
   )
