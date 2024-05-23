@@ -3,10 +3,12 @@ import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import {GoogleMap, useLoadScript, Marker} from '@react-google-maps/api'
+import Map from "./GoogleMap"
 
 export default function CreateListing() {
   const { currentUser } = useSelector((state) => state.user);
-    const [files, setFiles]  = useState([]);
+  const [files, setFiles]  = useState([]);
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [loading , setLoading] = useState(false);
@@ -31,6 +33,8 @@ export default function CreateListing() {
       coordinates :[0, 0]
     }
   })
+  const [location, setLocation] = useState({ lat: -34.397, lng: 150.644 });
+
   // console.log(files); 
   console.log(error); 
   console.log(formData);
@@ -176,6 +180,7 @@ export default function CreateListing() {
 
   const handleAddressUpload = async(e) =>{
     // console.log("handleAddressUpload called");
+    
     try {
       const address = formData.address;
       // console.log(address);
@@ -192,6 +197,12 @@ export default function CreateListing() {
 
         formData.location.coordinates[0] = latitude;
         formData.location.coordinates[1] = longitude;
+
+        setLocation({
+          lat: latitude, 
+          lng: longitude
+        })
+        // console.log(location);
 
         // console.log("formData.location.coordinates[0]", formData.location.coordinates[0]);
         // console.log("formData.location.coordinates[1]", formData.location.coordinates[1]);
@@ -307,6 +318,7 @@ export default function CreateListing() {
           </div>
         </div>
         <div className="flex flex-col flex-1 gap-4">
+        <Map location ={location}></Map>
           <p className='font-semibold'>Images:
           <span className='font-normal text-gray-600 ml-2'>The first image will be the cover (max 6)</span>
           </p>
@@ -343,6 +355,7 @@ export default function CreateListing() {
         </div>
         
       </form>
+              
     </main>
   );
 }
