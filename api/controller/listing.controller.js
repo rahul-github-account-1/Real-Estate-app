@@ -124,13 +124,47 @@ export const getListings = async (req, res, next) =>{
         let sort = req.query.sort || 'createdAt';
         let order = req.query.order || 'desc'
 
-        let applyGeoFilter = req.query.applyGeoFilter || 0;
+        let applyGeoFilter = (searchTerm == '') ? 0 : 1;
         let latitude = req.query.latitude || 0;
         let longitude = req.query.longitude || 0;
-        let radiusInRadians = req.query.radiusInRadians || 1000000000000;
+        let radiusInKilometer = parseInt(req.query.radiusInKilometer) || 10;
+        let radiusInRadians = radiusInKilometer/6371;
+
+        if(applyGeoFilter)
+        {
+            try {
+                const address = searchTerm;
+                // console.log(address);
+                // console.log(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
+                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.VITE_GOOGLE_MAP_API_KEY}`)
+                const resultLocation = await response.json();
+        
+                if(resultLocation.status = 'OK'){
+                    latitude = resultLocation.results[0].geometry.location.lat;
+                    longitude = resultLocation.results[0].geometry.location.lng;
+        
+                    // console.log(location);
+            
+                    // console.log("formData.location.coordinates[0]", formData.location.coordinates[0]);
+                    // console.log("formData.location.coordinates[1]", formData.location.coordinates[1]);
+                }else{
+                    console.log("resultLocation.status is not Ok")
+                    radiusInRadians = 10000000000;
+                }
+            } catch (error) {
+                console.log(error);
+                applyGeoFilter = false;
+            }
+            
+        }
+
+        console.log("latitude ", latitude)
+        console.log("longitude ", longitude)
+        
+        
 
         const baseQuery = {
-            name: { $regex: searchTerm, $options: 'i' },
+            // name: { $regex: searchTerm, $options: 'i' },
             offer: offer,
             furnished: furnished,
             type: type,
@@ -140,7 +174,7 @@ export const getListings = async (req, res, next) =>{
             baseQuery.location= {
                 $geoWithin: {
                     $centerSphere: [
-                      [longitude, latitude], radiusInRadians
+                      [latitude,longitude], radiusInRadians
                     ]
                   }
             }
@@ -151,9 +185,20 @@ export const getListings = async (req, res, next) =>{
             ];
         }
 
+
+        // console.log(baseQuery.location.$geoWithin)
+
+
         const data = await Listing.find(baseQuery).sort({
             [sort] : order,
         }).limit(limit).skip(startIndex);
+
+        // console.log(data )
+
+        for(let i=0; i<data.length; i++){
+            // console.log("jefda");
+            console.log(data[i].location);
+        }
 
 
         res.status(200).json(data);

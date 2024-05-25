@@ -19,6 +19,9 @@ export default function Search() {
         furnished : false,
         sort : 'createdAt',
         order : 'desc',
+        applyGeoFilter:false,
+        radiusInKilometer:10,
+
     }); 
 
     // console.log(formData);
@@ -35,6 +38,7 @@ export default function Search() {
       const furnishedFromUrl = urlParams.get('furnished')
       const sortFromUrl = urlParams.get('sort')
       const orderFromUrl = urlParams.get('order')
+      const radiusInKilometerFromUrl = urlParams.get('radiusInKilometer')
 
       console.log(offer);
       if(
@@ -44,7 +48,8 @@ export default function Search() {
         parkingFromUrl ||
         furnishedFromUrl ||
         sortFromUrl ||
-        orderFromUrl 
+        orderFromUrl  ||
+        radiusInKilometerFromUrl
       ){
         setFormData({
           searchTerm : searchTermFromUrl || '',
@@ -53,7 +58,8 @@ export default function Search() {
           parking : parkingFromUrl === 'true' ? true : false,
           furnished : furnishedFromUrl === 'true' ? true : false,
           sort : sortFromUrl || 'createdAt',
-          order : orderFromUrl || 'desc'
+          order : orderFromUrl || 'desc',
+          radiusInKilometer : radiusInKilometerFromUrl || 10
         })
       }
 
@@ -116,6 +122,12 @@ export default function Search() {
             type : e.target.id
           })
         }
+        if(e.target.id == "radiusInKm"){
+          setFormData({
+            ...formData, 
+            radiusInKilometer : e.target.value
+          })
+        }
         if(e.target.id === 'parking' || e.target.id === 'furnished' || e.target.id === 'offer'){
           setFormData({
             ...formData,
@@ -145,7 +157,8 @@ export default function Search() {
       urlParams.set('furnished', formData.furnished);
       urlParams.set('offer', formData.offer);
       urlParams.set('sort', formData.sort);
-      urlParams.set('order', formData.order);      
+      urlParams.set('order', formData.order);   
+      urlParams.set('radiusInKilometer', formData.radiusInKilometer)   
       
       const searchQuery = urlParams.toString();
       navigate( `/search?${searchQuery}`);
@@ -185,12 +198,21 @@ export default function Search() {
       <div className='p-7  border-b-2 md:border-r-2 md:min-h-screen'>
         <form onSubmit={handleSearchSubmit} className='flex flex-col gap-8'>
           <div className='flex items-center gap-2'>
-            <label className='whitespace-nowrap font-semibold'>Search Term:</label>
+            <label className='whitespace-nowrap font-semibold'>Location:</label>
             <input 
               onChange={handleChange}
               type='text' id='searchTerm' placeholder='Search...'
               className='border rounded-lg p-3 w-full'
               value={formData.searchTerm}
+            />
+          </div>
+          <div className='flex items-center gap-2'>
+            <label className='whitespace-nowrap font-semibold'>Within Area in Km:</label>
+            <input 
+              onChange={handleChange}
+              type='text' id='radiusInKm' placeholder='Search...'
+              className='border rounded-lg p-3 w-full'
+              value={formData.radiusInKilometer}
             />
           </div>
           <div className='flex gap-2 flex-wrap items-center'>
