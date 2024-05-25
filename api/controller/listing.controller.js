@@ -87,6 +87,14 @@ export const getListing = async (req, res, next) =>{
     }
 }
 
+export const getLocation = async(req, res, next) =>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 export const getListings = async (req, res, next) =>{
     try {
         const limit = parseInt(req.query.limit) || 9;
@@ -135,11 +143,12 @@ export const getListings = async (req, res, next) =>{
             try {
                 const address = searchTerm;
                 // console.log(address);
-                // console.log(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
+                // console.log(process.env.VITE_GOOGLE_MAP_API_KEY)
                 const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.VITE_GOOGLE_MAP_API_KEY}`)
                 const resultLocation = await response.json();
-        
-                if(resultLocation.status = 'OK'){
+                
+                // console.log(resultLocation)
+                if(resultLocation.status === 'OK'){
                     latitude = resultLocation.results[0].geometry.location.lat;
                     longitude = resultLocation.results[0].geometry.location.lng;
         
@@ -147,9 +156,11 @@ export const getListings = async (req, res, next) =>{
             
                     // console.log("formData.location.coordinates[0]", formData.location.coordinates[0]);
                     // console.log("formData.location.coordinates[1]", formData.location.coordinates[1]);
-                }else{
+                }else if(resultLocation.status ==='ZERO_RESULTS'){
+                    // res.status(200).json({});
+                }else{  
                     console.log("resultLocation.status is not Ok")
-                    radiusInRadians = 10000000000;
+                    // radiusInRadians = 10000000000;
                 }
             } catch (error) {
                 console.log(error);
@@ -158,8 +169,8 @@ export const getListings = async (req, res, next) =>{
             
         }
 
-        console.log("latitude ", latitude)
-        console.log("longitude ", longitude)
+        // console.log("latitude ", latitude)
+        // console.log("longitude ", longitude)
         
         
 
@@ -195,10 +206,10 @@ export const getListings = async (req, res, next) =>{
 
         // console.log(data )
 
-        for(let i=0; i<data.length; i++){
+        // for(let i=0; i<data.length; i++){
             // console.log("jefda");
-            console.log(data[i].location);
-        }
+            // console.log(data[i].location);
+        // }
 
 
         res.status(200).json(data);

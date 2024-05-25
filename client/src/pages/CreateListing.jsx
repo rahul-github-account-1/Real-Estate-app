@@ -4,7 +4,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {GoogleMap, useLoadScript, Marker} from '@react-google-maps/api'
-import Map from "./GoogleMap"
+import Map from "../component/GoogleMap"
 
 export default function CreateListing() {
   const { currentUser } = useSelector((state) => state.user);

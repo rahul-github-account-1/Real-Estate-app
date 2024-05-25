@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-
+import {GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+// import AutocompleteComponent from './AutoComplete';
 const containerStyle = {
   width: '400px',
   height: '400px'
@@ -14,7 +14,6 @@ const initialcenter = {
 function MyComponent({location}) {
 
   const [center, setCenter] = useState(location);
-  const mapRef = useRef(null)
 
   const onMarkerDragEnd = (event) => {
     const lat = event.latLng.lat();
@@ -25,11 +24,6 @@ function MyComponent({location}) {
   console.log("location im map ", location)
 
   useEffect(()=>{
-    console.log(mapRef, location);
-    // mapRef.current = location;
-    if(mapRef.current && location){
-      mapRef.current.panTo(new window.google.maps.LatLng(location.lat, location.lng));
-    }
     setCenter(location)
   }
   , [location])
@@ -42,15 +36,19 @@ function MyComponent({location}) {
         mapContainerStyle={containerStyle}
         center={center}
         zoom={15}
-        onLoad={map => mapRef.current = map}
+        // onLoad={map => mapRef.current = map}
       >
         { /* Child components, like markers or shapes */ }
         <Marker position={center} 
           draggable = {true}
           onDragEnd={onMarkerDragEnd}/>
       </GoogleMap>
+      {/* <AutocompleteComponent></AutocompleteComponent> */}
     </LoadScript>
+
   )
 }
 
 export default React.memo(MyComponent);
+
+

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
-import Map from './GoogleMap'
+import Map from '../component/GoogleMap'
 // import {SliderWrap} from "./swiper.style";
 
 import {Swiper, SwiperSlide} from 'swiper/react';
