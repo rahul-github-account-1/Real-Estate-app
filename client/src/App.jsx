@@ -10,7 +10,8 @@ import CreateListing from "./pages/CreateListing"
 import UpdateListing from "./pages/UpdateListing"
 import Listing from "./pages/Listing"
 import Search from "./pages/Search"
-import Map from "./component/GoogleMap"
+import ComponentTest from "./component/ComponentTest"
+import GMP2 from "./component/GoogleMap2"
 
 export default function App() {
   return (
@@ -31,6 +32,9 @@ export default function App() {
       <Route path="/listing/:listingId" element = {<Listing></Listing>}></Route>
       <Route path="/search" element = {<Search></Search>}></Route>
       <Route path="/map" element = {<Map></Map>}></Route>
+      <Route path="/componentTest" element = {<ComponentTest></ComponentTest>}></Route>
+      <Route path="/GMP2" element = {<GMP2></GMP2>}></Route>
+
 
 
       </Routes>

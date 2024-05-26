@@ -7,12 +7,13 @@ const containerStyle = {
 };
 
 const initialcenter = {
-  lat: 28.5005149,
+  lat: 28.5005141,
   lng: 77.381967
 };
 
 function MyComponent({location}) {
 
+  console.log("MyComponent,", location)
   const [center, setCenter] = useState(location);
 
   const onMarkerDragEnd = (event) => {
@@ -42,6 +43,7 @@ function MyComponent({location}) {
         <Marker position={center} 
           draggable = {true}
           onDragEnd={onMarkerDragEnd}/>
+
       </GoogleMap>
       {/* <AutocompleteComponent></AutocompleteComponent> */}
     </LoadScript>

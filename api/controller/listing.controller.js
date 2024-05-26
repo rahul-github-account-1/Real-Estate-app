@@ -78,7 +78,7 @@ export const getListing = async (req, res, next) =>{
         if(!listing){
             next(errorHandler(404, 'Listing not found!'));
         }
-        console.log('listing de di');
+        // console.log('listing de di');
         // console.log(listing);
         res.status(200).json(listing);
         
