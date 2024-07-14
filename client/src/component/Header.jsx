@@ -1,84 +1,90 @@
 import React, { useEffect, useState } from 'react'
-import {Link, useNavigate, useSearchParams} from 'react-router-dom'
-import {FaSearch} from 'react-icons/fa'
-import {useSelector} from 'react-redux';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { FaSearch } from 'react-icons/fa'
+import { useSelector } from 'react-redux';
+import { BiHomeCircle } from "react-icons/bi";
 
 export default function Header() {
     const [searchTerm, setSearchTerm] = useState('');
 
     // console.log(searchTerm);
-    const {currentUser} = useSelector(state => state.user);
+    const { currentUser } = useSelector(state => state.user);
     const navigate = useNavigate();
 
-    const handleSearchSubmit = (e)  => {
+    const handleSearchSubmit = (e) => {
         e.preventDefault();
-            // console.log(searchParams);
-            const urlParams = new URLSearchParams(window.location.search);
-            urlParams.set('searchTerm', searchTerm);
+        // console.log(searchParams);
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('searchTerm', searchTerm);
 
-            const searchQuery = urlParams.toString();
+        const searchQuery = urlParams.toString();
 
-            navigate( `/search?${searchQuery}`);
+        navigate(`/search?${searchQuery}`);
 
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         try {
             const urlParams = new URLSearchParams(window.location.search);
 
             const searchTermFromUrl = urlParams.get('searchTerm');
             // console.log(searchTermFromUrl);
-            if(searchTermFromUrl){
+            if (searchTermFromUrl) {
                 setSearchTerm(searchTermFromUrl);
             }
         } catch (error) {
-            
+
         }
     }, [window.location.search])
-  return (
-    <header className='bg-slate-200 shadow-md '>
-        <div className='flex justify-between items-center max-w-6xl mx-auto p-3'> 
+    return (
+        <header className='bg-slate-200 shadow-md  bg-gradient-to-r from-cyan-400 to-green-800'>
+            <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
 
-            <Link to='/'>
-                <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-                    <span className='text-slate-500'>Pro</span>
-                    <span className='text-slate-700'>Real</span>
-                    <span className='text-slate-500'>Estate</span>
-                </h1>
-            </Link>     
-
-            <form onSubmit={handleSearchSubmit} className='bg-slate-100 p-3 rounded-lg flex items-center'>
-                <input onChange={(e) => setSearchTerm(e.target.value)} type="text" placeholder='Search...' 
-                className='bg-transparent focus:outline-none w-24 sm:w-64'
-                value = {searchTerm}
-                />
-                <button>
-                <FaSearch className = "text-slate-600"></FaSearch>
-                </button>
-            </form>
-
-            <ul className='flex gap-4  text-slate-500'>
                 <Link to='/'>
-                    <li className='hidden sm:inline hover:underline'>Home</li>
+                    <h1 className='font-bold text-sm sm:text-xl flex flex-wrap items-center  '>
+                        <BiHomeCircle className='text-3xl mr-1 text-red-500 rounded-full border-solid border-2 border-yellow-500'/>
+                        <div>
+                            <span className='text-2xl text-red-500'>Pro</span>
+                            <span className='text-2xl text-slate-700'>Real</span>
+                            <span className='text-2xl text-red-500'>Estate</span>
+                        </div>
+
+
+                    </h1>
                 </Link>
-                
-                <Link to='/about'>
-                    <li className='hidden sm:inline hover:underline'>About</li>
-                </Link>
 
-                <Link to='/profile'>
-                    {currentUser ? (
-                    <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='profile' />
-                    ) : (
-                    <li className=' text-slate-500  hover:underline'> Sign in</li>
-                    )}                
-                </Link>
-                
-            </ul>
+                <form onSubmit={handleSearchSubmit} className='bg-slate-100 p-3 rounded-lg flex items-center'>
+                    <input onChange={(e) => setSearchTerm(e.target.value)} type="text" placeholder='Search...'
+                        className='bg-transparent focus:outline-none w-24 sm:w-64'
+                        value={searchTerm}
+                    />
+                    <button>
+                        <FaSearch className="text-slate-600"></FaSearch>
+                    </button>
+                </form>
+
+                <ul className='flex gap-4  text-neutral-100'>
+                    <Link to='/'>
+                        <li className='hidden sm:inline hover:shadow-lg hover:shadow-neutral-200/50'>Home</li>
+                    </Link>
+
+                    <Link to='/about'>
+                        <li className='hidden sm:inline hover:shadow-lg hover:shadow-neutral-200/50'>About</li>
+                    </Link>
+
+                    <Link to='/profile'>
+                        {currentUser ? (
+                            <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='profile' />
+                        ) : (
+                            <li className='text-neutral-100  hover:shadow-lg hover:shadow-neutral-200/50'> Sign in</li>
+                        )}
+                    </Link>
+
+                </ul>
 
 
-        </div>
+            </div>
 
-    </header>
-  )
+        </header>
+    )
 }
